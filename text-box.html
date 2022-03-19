@@ -23,26 +23,79 @@
                    <textarea class="form-control" placeholder="Leave a comment here" id="text" style="height: 250px"></textarea>
                    <label for="text">Say Something</label>
                </div>
-               <p class="">
-                   <span id="textCount">0</span> / 30
-               </p>
+               <div class="d-flex justify-content-between">
+                   <p class="">
+                       <span id="textCount">0</span> / 150
+                   </p>
+                   <div class="">
+                       <i class="fa-fw fa-solid fa-microphone" id="voice"></i>
+                       <i class="fa-fw fa-solid fa-volume-up ms-2" id="speech"></i>
+                       <i class="fa-fw fa-solid fa-trash-alt ms-2" id="cleanText"></i>
+                   </div>
+               </div>
+
            </div>
         </div>
     </div>
 </div>
 
 <script>
+
     let text = document.getElementById('text');
     let textCount = document.getElementById('textCount');
-    let maxTextLength = 30;
+    let speech = document.getElementById('speech');
+    let cleanText = document.getElementById('cleanText');
+    let voice = document.getElementById('voice');
+    let maxTextLength = 150;
+
     text.addEventListener("keyup",function (){
-        console.log(this.value.length)
+        // console.log(this.value.length)
         textCount.innerText = this.value.length
         if(this.value.length > maxTextLength){
             this.value = this.value.slice(0,maxTextLength-1);
-            console.log("kyaw nay p");
+            // console.log("kyaw nay p");
         }
     })
+
+    voice.addEventListener('click',function (){
+        console.log("work");
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const speechDetect = new SR();
+        speechDetect.addEventListener('result',function (e){
+            console.log(e.results);
+            text.value += " "+e.results[0][0].transcript
+        })
+        speechDetect.addEventListener('speechstart',function (){
+            voice.classList.add('text-primary');
+        })
+        speechDetect.addEventListener('speechend',function (){
+            voice.classList.remove("text-primary");
+        })
+        speechDetect.start()
+    })
+
+    speech.addEventListener('click',function (){
+        let speechConfig = new SpeechSynthesisUtterance();
+        speechConfig.text = text.value;
+        speechConfig.volume = 1;
+        speechConfig.pitch = 1;
+        speechConfig.rate = 1;
+        // speechConfig.lang = "id-ID";
+        window.speechSynthesis.speak(speechConfig);
+        // console.log("san kyi tar")
+        speechConfig.addEventListener('start',function (){
+            speech.classList.add('text-primary');
+        })
+        speechConfig.addEventListener('end',function (){
+            speech.classList.remove("text-primary");
+        })
+    })
+
+    cleanText.addEventListener("click",function (){
+        text.value = ""
+    })
+
+
 </script>
 </body>
 </html>
