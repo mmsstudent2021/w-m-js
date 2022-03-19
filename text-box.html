@@ -75,6 +75,7 @@
     })
 
     speech.addEventListener('click',function (){
+        if (text.value.length === 0 ) return
         let speechConfig = new SpeechSynthesisUtterance();
         speechConfig.text = text.value;
         speechConfig.volume = 1;
