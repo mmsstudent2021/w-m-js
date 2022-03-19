@@ -7,15 +7,36 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Upload Ui</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
+    <style>
+
+        #uploadUi{
+            transition: 0.5s;
+        }
+        #uploadUi:active{
+            transform: scale(0.92);
+        }
+
+        .box{
+            columns: 3 120px;
+        }
+
+    </style>
 </head>
 <body>
 
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="">
+                <div class="bg-primary text-white rounded py-5 text-center my-3" id="uploadUi">
+                    <i class="fa-solid fa-camera fa-3x"></i>
+                </div>
+                <div class="d-none">
                     <label class="form-label">Upload Photo</label>
                     <input type="file" class="form-control" id="photoUpload">
+                </div>
+                <div class="box" id="box">
                 </div>
             </div>
         </div>
@@ -23,6 +44,26 @@
 
 <script>
     let photoUpload = document.getElementById("photoUpload");
+    let uploadUi = document.getElementById("uploadUi");
+    let box = document.getElementById("box");
+
+    uploadUi.addEventListener("click",function (){
+        photoUpload.click();
+    })
+
+    photoUpload.addEventListener("change",function (){
+        console.log(this.files[0])
+        let fileReader = new FileReader();
+        fileReader.onload = function (){
+            console.log(fileReader.result)
+            let img = document.createElement('img');
+            img.classList.add("w-100","rounded","mb-3","animate__animated","animate__fadeInDown")
+            img.src = fileReader.result;
+            box.append(img);
+        }
+        fileReader.readAsDataURL(this.files[0])
+
+    })
 </script>
 </body>
 </html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Upload Ui</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center my-5">
+        <div class="col-lg-8">
+           <div class="mb-3">
+               <div class="form-floating">
+                   <textarea class="form-control" placeholder="Leave a comment here" id="text" style="height: 250px"></textarea>
+                   <label for="text">Say Something</label>
+               </div>
+               <p class="">
+                   <span id="textCount">0</span> / 30
+               </p>
+           </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let text = document.getElementById('text');
+    let textCount = document.getElementById('textCount');
+    let maxTextLength = 30;
+    text.addEventListener("keyup",function (){
+        console.log(this.value.length)
+        textCount.innerText = this.value.length
+        if(this.value.length > maxTextLength){
+            this.value = this.value.slice(0,maxTextLength-1);
+            console.log("kyaw nay p");
+        }
+    })
+</script>
+</body>
+</html>
