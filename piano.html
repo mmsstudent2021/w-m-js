@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Piano</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        .key{
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+        .key:active{
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row g-2 vh-100 justify-content-center align-items-center" id="playKeys"></div>
+</div>
+
+<script>
+
+    let playKeys = document.getElementById("playKeys");
+
+    let pianokeys = ["C4","D4","E4","F4","G4","A4","B4","C5"];
+    let controlKyes = ["a","s","d","f","j","k","l",";"];
+
+    let sounds = [
+        {
+            sound : "C4",
+            key : "a"
+        },
+        {
+            sound : "D4",
+            key : "s"
+        },
+
+    ];
+
+    pianokeys.forEach(key => {
+        // console.log(key)
+        let div = document.createElement("div");
+        div.classList.add('col');
+        div.innerHTML = `<div class="key bg-primary" key="${key}" onclick="playSound('${key}')">
+                            <p class="mb-0">
+                                ${key}
+                            </p>
+                        </div>`;
+        playKeys.append(div)
+    });
+
+    document.addEventListener("keypress",function (e){
+        // console.log(e.key,e.keyCode);
+
+        // let data = sounds.find(el => el.key === e.key);
+        //
+        // if(data != undefined){
+        //     playSound(data.sound);
+        // }
+
+        if(controlKyes.includes(e.key)){
+            let ui = document.querySelector(`[key='${pianokeys[controlKyes.indexOf(e.key)]}']`);
+            ui.style.opacity = 0.8;
+            setTimeout(function (){
+                ui.style.opacity = 1;
+            },100)
+            playSound(pianokeys[controlKyes.indexOf(e.key)])
+        }
+
+        // if(controlKyes.includes(e.key)){
+        //
+        // }
+        //
+        // if(e.key === "a"){
+        //     playSound('C4');
+        // }else if(e.key === "s"){
+        //     playSound('D4');
+        // }
+    });
+
+    function playSound(x){
+        console.log(event);
+        let audio = new Audio(`sound/${x}.mp3`);
+        audio.play();
+        console.log(`Play ${x}`);
+    }
+</script>
+
+</body>
+</html>
