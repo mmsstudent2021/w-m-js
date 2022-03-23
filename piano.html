@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <style>
         .key{
-            height: 150px;
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,7 +19,7 @@
             cursor: pointer;
             user-select: none;
         }
-        .key:active{
+        .key:active,.active{
             opacity: 0.9;
         }
     </style>
@@ -34,8 +34,8 @@
 
     let playKeys = document.getElementById("playKeys");
 
-    let pianokeys = ["C4","D4","E4","F4","G4","A4","B4","C5"];
-    let controlKyes = ["a","s","d","f","j","k","l",";"];
+    // let pianokeys = ["C4","D4","E4","F4","G4","A4","B4","C5"];
+    // let controlKyes = ["a","s","d","f","j","k","l",";"];
 
     let sounds = [
         {
@@ -46,38 +46,64 @@
             sound : "D4",
             key : "s"
         },
-
+        {
+            sound : "E4",
+            key : "d"
+        },
+        {
+            sound : "F4",
+            key : "f"
+        },
+        {
+            sound : "G4",
+            key : "j"
+        },
+        {
+            sound : "A4",
+            key : "k"
+        },
+        {
+            sound : "B4",
+            key : "l"
+        },
+        {
+            sound : "C5",
+            key : ";"
+        },
     ];
 
-    pianokeys.forEach(key => {
+    sounds.forEach(sound => {
         // console.log(key)
         let div = document.createElement("div");
         div.classList.add('col');
-        div.innerHTML = `<div class="key bg-primary" key="${key}" onclick="playSound('${key}')">
+        div.innerHTML = `<div class="key bg-primary" key="${sound.key}" onclick="playSound('${sound.sound}')">
                             <p class="mb-0">
-                                ${key}
+                                ${sound.sound}
                             </p>
                         </div>`;
         playKeys.append(div)
     });
 
-    document.addEventListener("keypress",function (e){
+    document.addEventListener("keyup",function (e){
         // console.log(e.key,e.keyCode);
 
-        // let data = sounds.find(el => el.key === e.key);
-        //
-        // if(data != undefined){
-        //     playSound(data.sound);
-        // }
+        let data = sounds.find(el => el.key === e.key);
 
-        if(controlKyes.includes(e.key)){
-            let ui = document.querySelector(`[key='${pianokeys[controlKyes.indexOf(e.key)]}']`);
-            ui.style.opacity = 0.8;
-            setTimeout(function (){
-                ui.style.opacity = 1;
-            },100)
-            playSound(pianokeys[controlKyes.indexOf(e.key)])
+        if(data != undefined){
+            playSound(data.sound);
+            let ui = document.querySelector(`[key='${data.key}']`);
+            ui.classList.add("active");
+            setTimeout(_=>ui.classList.remove('active'),100)
         }
+
+        // if(controlKyes.includes(e.key)){
+        //     let ui = document.querySelector(`[key='${pianokeys[controlKyes.indexOf(e.key)]}']`);
+        //     ui.style.opacity = 0.8;
+        //     setTimeout(function (){
+        //         ui.style.opacity = 1;
+        //     },100)
+        //     playSound(pianokeys[controlKyes.indexOf(e.key)])
+        // }
 
         // if(controlKyes.includes(e.key)){
         //

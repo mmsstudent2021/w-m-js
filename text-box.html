@@ -23,9 +23,9 @@
                    <textarea class="form-control" placeholder="Leave a comment here" id="text" style="height: 250px"></textarea>
                    <label for="text">Say Something</label>
                </div>
-               <div class="d-flex justify-content-between">
+               <div class="d-flex justify-content-between mt-1">
                    <p class="">
-                       <span id="textCount">0</span> / 150
+                       <span id="textCount">0</span> / <span id="maxLenght"></span>
                    </p>
                    <div class="">
                        <i class="fa-fw fa-solid fa-microphone" id="voice"></i>
@@ -47,6 +47,8 @@
     let cleanText = document.getElementById('cleanText');
     let voice = document.getElementById('voice');
     let maxTextLength = 150;
+    document.getElementById('maxLenght').innerText = maxTextLength;
+
 
     text.addEventListener("keyup",function (){
         // console.log(this.value.length)
