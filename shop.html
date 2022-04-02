@@ -44,9 +44,14 @@
 
                     </div>
                 </div>
-                <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                    <i class="fa-solid fa-shopping-cart"></i>
-                </button>
+                <div class="d-flex">
+                    <select class="form-select me-2" id="categoryLists">
+                        <option value="all">All Category</option>
+                    </select>
+                    <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        <i class="fa-solid fa-shopping-cart"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -135,12 +140,22 @@
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script>
 
-    $("#product-loading").append(`<div class="spinner-border text-primary" role="status">
-  <span class="visually-hidden">Loading...</span>
-</div>`);
+    let productsFromApi = null;
+    let categoriesFromApi = null;
 
-    $.get("https://fakestoreapi.com/products/",function (products){
-        products.forEach(function (product){
+    function showLoading(){
+        $("#product-loading").append(`<div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>`);
+    }
+
+    function hideLoading(){
+        $("#product-loading").empty();
+    }
+
+    function showProductList(productLists){
+        $("#products").empty();
+        productLists.forEach(function (product){
             $("#products").append(`
 
                 <div class="col-6 col-md-4 col-lg-3">
@@ -161,13 +176,42 @@
 
             `);
         })
+    }
 
-        $("#product-loading").empty();
+    function showCategoryList(categoryLists){
+        categoryLists.forEach(function (category){
+            $("#categoryLists").append(`<option value="${category}">${category}</option>`);
+        })
+    }
+
+
+    showLoading()
+
+    $.get("https://fakestoreapi.com/products/categories",function (categories){
+        categoriesFromApi = categories;
+        showCategoryList(categoriesFromApi)
+    })
+
+    $.get("https://fakestoreapi.com/products/",function (products){
+
+        productsFromApi = products;
+
+        showProductList(productsFromApi);
+
+        hideLoading()
+
+
 
         $(".add-to-cart").click(function (){
             console.log($(this).attr("product-id"))
         })
 
+    })
+
+    $("#categoryLists").on("change",function (){
+        console.log($(this).val())
+        let selectedCategory = $(this).val();
+        showProductList(productsFromApi.filter(product=>product.category == selectedCategory))
     })
 
 </script>
