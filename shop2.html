@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <style>
+
+        .product{
+            height: 350px;
+        }
+        .product-img{
+            height: 150px;
+            max-width: 100%;
+        }
+        .product-title{
+            font-size: 12px;
+        }
+        .product-foot{
+            height: 120px;
+        }
+        .cart-img{
+            height: 30px;
+        }
+        .cart-item-title{
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-end my-3">
+                <div class="d-flex align-items-center ">
+                    <h1 class="mb-0 ">
+                        Products
+                    </h1>
+                    <div id="product-loading" class="ms-2">
+
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <select class="form-select me-2" id="categories">
+                        <option value="all">All Categories</option>
+                    </select>
+                    <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        <i class="fa-solid fa-shopping-cart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="products">
+
+    </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Your Cart</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="" id="cartItems">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+
+    let productLists = null;
+    let categoryLists = null;
+    let cart = [];
+
+    function showLoading(){
+        $("#product-loading").append(`<div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>`);
+    }
+
+    function hideLoading(){
+        $("#product-loading").empty();
+    }
+
+    function showList(productArr){
+        let selectProductUI = $("#products");
+        selectProductUI.empty();
+        productArr.forEach(function (product){
+            selectProductUI.append(`
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product border rounded p-3 mb-4">
+                        <img class="product-img d-block" src="${product.image}" alt="">
+                        <p class="small badge bg-secondary rounded-pill">${product.category}</p>
+                        <div class="d-flex flex-column justify-content-between product-foot">
+                            <p class="product-title">${product.title}</p>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <p class="mb-0">$ ${product.price}</p>
+                                <button class="btn btn-sm btn-outline-primary add-to-cart" product-id="${product.id}" >
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        })
+    }
+
+    function showCategory(categoryArray){
+        categoryArray.forEach(function (category){
+            $("#categories").append(`<option value="${category}">${category}</option>`);
+        })
+    }
+
+    showLoading()
+
+    $.get("https://fakestoreapi.com/products/categories",function (categories){
+        categoryLists = categories;
+        showCategory(categoryLists);
+    });
+
+    $.get("https://fakestoreapi.com/products/",function (products){
+        productLists = products;
+
+        showList(productLists)
+
+        hideLoading()
+
+
+    })
+
+    $("#products").delegate(".add-to-cart","click",function (){
+        console.log($(this).attr("product-id"))
+        let currentProductId = $(this).attr("product-id");
+        let currentProductDetail = productLists.find(product=>product.id == currentProductId);
+        console.log(currentProductDetail);
+        $("#cartItems").append(`
+            <div class="cart-item border-bottom pb-3 mb-3">
+                <div class="d-flex align-items-end mb-3">
+                    <img src="${currentProductDetail.image}" class="cart-img" alt="">
+                    <p class="mb-0 cart-item-title ms-2">
+                        ${currentProductDetail.title}
+                    </p>
+                </div>
+                <div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="cart-quantity d-flex">
+                            <button class="btn btn-sm btn-primary cart-item-quantity-minus">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <input type="number" value="1" unit-price="${currentProductDetail.price}" class="cart-item-quantity form-control mx-2 form-control-sm w-25">
+                            <button class="btn btn-sm btn-primary cart-item-quantity-plus">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                        <p class="mb-0 cart-item-cost">${currentProductDetail.price}</p>
+                    </div>
+                </div>
+            </div>
+        `);
+    })
+
+    $("#cartItems").delegate(".cart-item-quantity-plus","click",function (){
+        console.log($(this));
+        // let cartItemQuantity = $(this).siblings(".cart-item-quantity").val();
+        let quantity = $(this).siblings(".cart-item-quantity");
+        let unitPrice = quantity.attr("unit-price");
+        quantity.val(function (i,val){
+            let newVal = Number(val)+1;
+            let cost = newVal * unitPrice;
+            $(this).parent().siblings(".cart-item-cost").text(cost)
+            console.log(i);
+            return Number(val)+1;
+        })
+    })
+
+    $("#categories").on("change",function (){
+        showLoading()
+        console.log($(this).val());
+        let selectedCategory = $(this).val();
+        setTimeout(function (){
+            showList(productLists.filter(product => product.category === selectedCategory))
+            hideLoading()
+        },2000)
+    })
+
+
+</script>
+</body>
+</html>

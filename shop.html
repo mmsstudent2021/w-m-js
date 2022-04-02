@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <style>
+
+        .product{
+            height: 350px;
+        }
+        .product-img{
+            height: 150px;
+            max-width: 100%;
+        }
+        .product-title{
+            font-size: 12px;
+        }
+        .product-foot{
+            height: 120px;
+        }
+        .cart-img{
+            height: 30px;
+        }
+        .cart-item-title{
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-end my-3">
+                <div class="d-flex align-items-center ">
+                    <h1 class="mb-0 ">
+                        Products
+                    </h1>
+                    <div id="product-loading" class="ms-2">
+
+                    </div>
+                </div>
+                <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="products">
+
+    </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Your Cart</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="" id="cartItems">
+                <div class="cart-item border-bottom pb-3 mb-3">
+                    <div class="d-flex align-items-end mb-3">
+                        <img src="https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg" class="cart-img" alt="">
+                        <p class="mb-0 cart-item-title ms-2">
+                            something
+                        </p>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="cart-quantity d-flex">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <input type="number" value="1" class="form-control mx-2 form-control-sm w-25">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                            <p class="mb-0">$50</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-item border-bottom pb-3 mb-3">
+                    <div class="d-flex align-items-end mb-3">
+                        <img src="https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg" class="cart-img" alt="">
+                        <p class="mb-0 cart-item-title ms-2">
+                            something
+                        </p>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="cart-quantity d-flex">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <input type="number" value="1" class="form-control mx-2 form-control-sm w-25">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                            <p class="mb-0">$50</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-item border-bottom pb-3 mb-3">
+                    <div class="d-flex align-items-end mb-3">
+                        <img src="https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg" class="cart-img" alt="">
+                        <p class="mb-0 cart-item-title ms-2">
+                            something
+                        </p>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="cart-quantity d-flex">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <input type="number" value="1" class="form-control mx-2 form-control-sm w-25">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                            <p class="mb-0">$50</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+
+    $("#product-loading").append(`<div class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>`);
+
+    $.get("https://fakestoreapi.com/products/",function (products){
+        products.forEach(function (product){
+            $("#products").append(`
+
+                <div class="col-6 col-md-4 col-lg-3">
+                <div class="product border rounded p-3 mb-4">
+                    <img class="product-img d-block" src="${product.image}" alt="">
+                    <p class="small badge bg-secondary rounded-pill">${product.category}</p>
+                    <div class="d-flex flex-column justify-content-between product-foot">
+                        <p class="product-title">${product.title}</p>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <p class="mb-0">$ ${product.price}</p>
+                            <button class="btn btn-sm btn-outline-primary add-to-cart" product-id="${product.id}" >
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            `);
+        })
+
+        $("#product-loading").empty();
+
+        $(".add-to-cart").click(function (){
+            console.log($(this).attr("product-id"))
+        })
+
+    })
+
+</script>
+</body>
+</html>

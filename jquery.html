@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+<h1>San Kyi Tar</h1>
+<ul>
+
+</ul>
+
+
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+
+
+let ul = $("ul");
+
+
+ul.append("<li>aaa</li>");
+ul.append("<li>bbb</li>");
+ul.append("<li>ccc</li>");
+ul.prepend("<li>One</li>");
+ul.prepend("<li>Two</li>");
+
+// ul.before("<h1>List Tag</h1>")
+ul.after("<hr>")
+
+
+// $("h1").css({
+//     color : "red",
+//     backgroundColor : "pink"
+// });
+
+// console.log($("h1").css("color"))
+// console.log($("h1").css("background-color"))
+
+$(document).ready(function (){
+   console.log("load finish");
+});
+
+
+console.log("aaaa")
+console.log("bbb")
+console.log("aaaacc")
+
+$("h1").addClass(["text-danger","bg-dark"])
+
+$("h1").text("loading.....");
+
+$.get("https://fakestoreapi.com/products/",function (data){
+    console.log(data);
+    $("h1").text("finish")
+})
+
+
+
+
+</script>
+</body>
+</html>
