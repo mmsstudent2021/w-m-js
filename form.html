@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        header{
+            border: 2px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 10px;
+            padding: 10px;
+        }
+
+        
+        .brand{
+            text-transform: uppercase;
+        }
+
+        nav{
+            border: 1px solid black;
+            flex-grow: 1;
+            padding: 10px;
+            display: flex;
+            gap: 20px;
+            justify-content: end;
+        }
+
+        .nav-link{
+            border: 2px solid black;
+            color: black;
+            width: 100px;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px 0;
+            transition: 0.5s;
+        }
+
+        .nav-link.active,.nav-link:hover{
+            background-color: #000;
+            color: white;
+        }
+
+        .nav-toggler{
+            border: 1px solid black;
+            align-self: stretch;
+            padding: 10px;
+            background-color: transparent;
+            display: none;
+        }
+
+        @media screen and (max-width:420px) {
+            header{
+                flex-wrap: wrap;
+            }
+            nav{
+                display: none;
+            }
+            nav.open{
+                width: 100%;
+                display: flex;
+                flex-flow: column;
+                justify-content: stretch;
+            }
+            .nav-link{
+                width: auto;
+            }
+            .nav-toggler{
+                display: block;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h3 class="brand">My Brand</h3>
+    <button class="nav-toggler">Menu</button>
+    <nav class="">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link active" href="index.html">About</a>
+        <a class="nav-link" href="index.html">Services</a>
+        <a class="nav-link" href="index.html">Profile</a>
+        <a class="nav-link" href="index.html">Contact</a>
+    </nav>
+</header>
+    
+</body>
+</html>
